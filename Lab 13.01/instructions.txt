@@ -1,0 +1,10 @@
+the number of leaves in the tree
+the diameter of the tree 
+the total number of nodes in the tree 
+the width of each level of the tree 
+a boolean method that indicates if the tree is full
+a boolean method that returns whether a Comparable is contained 
+a getLargestMethod that returns the largest Comparable
+a getSmallest method that returns the smallest Comparable 
+a method that prints the first 6 levels
+remove a Comparable from the tree and return the Node
