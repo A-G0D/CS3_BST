@@ -51,7 +51,7 @@ public class BinarySearchTree {
                 if (current.getRight() != null) queue.add(current.getRight());
             }
         }
-    return mxWidth;
+        return mxWidth;
     }
     public void swap(BinaryNode a, BinaryNode b) {
         Comparable tmp = a.getValue();
@@ -124,7 +124,6 @@ public class BinarySearchTree {
         Queue<BinaryNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
-            int levelWidth = queue.size();
             for (int i = 0; i < levelWidth; i++) {
                 BinaryNode current = queue.poll();
                 ret.add(current);
@@ -134,6 +133,113 @@ public class BinarySearchTree {
         }
         return ret;
     }
-
-
+    public int leaves() {
+        int ret = 0;
+        Queue<BinaryNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int levelWidth = queue.size();
+            for (int i = 0; i < levelWidth; i++) {
+                BinaryNode current = queue.poll();
+                boolean children = false;
+                if (current.getLeft() != null) {
+                    queue.add(current.getLeft());
+                    children = true;
+                }
+                if (current.getRight() != null) {
+                    queue.add(current.getRight());
+                    children = true;
+                }
+                if (!children) ret++;
+            }
+        }
+        return ret;
+    }
+    public int diameter() {
+        return root.getLeft().height() + root.getRight().height() + 1;
+    }
+    public int nodes() {
+        Queue<BinaryNode> queue = new LinkedList<>();
+        queue.add(root);
+        int nodes = 0;
+        while (!queue.isEmpty()) {
+            int levelWidth = queue.size();
+            nodes += levelWidth;
+            for (int i = 0; i < levelWidth; i++) {
+                BinaryNode current = queue.poll();
+                if (current.getLeft() != null) queue.add(current.getLeft());
+                if (current.getRight() != null) queue.add(current.getRight());
+            }
+        }
+        return nodes;
+    }
+    public int levelWidth(int level) {
+        Queue<BinaryNode> queue = new LinkedList<>();
+        queue.add(root);
+        int idx = 0;
+        while (!queue.isEmpty()) {
+            idx++;
+            int levelWidth = queue.size();
+            if (idx == level) return levelWidth;
+            for (int i = 0; i < levelWidth; i++) {
+                BinaryNode current = queue.poll();
+                if (current.getLeft() != null) queue.add(current.getLeft());
+                if (current.getRight() != null) queue.add(current.getRight());
+            }
+        }
+        return -1;
+    }
+    public boolean isFull() {
+        for (int lvl = 0; lvl <= height(root); lvl++) {
+            if (levelWidth(lvl)!=(int)Math.pow(2, lvl)) return false;
+        }
+        return true;
+    }
+    public boolean contains(BinaryNode s, BinaryNode x) {
+        if (s = null) return false;
+        else {
+            if (s.compareTo(x)>0) {
+                if (s.getLeft() == null) return false;
+                else return contains(s.getLeft(), x);
+            } else if (s.compareTo(x)<0){
+                if (s.getRight() == null) return false;
+                else return contains(s.getRight(), x);
+            } else {
+                return true;
+            }
+        }
+    }
+    public boolean contains(BinaryNode x) {
+        return contains(root, x);
+    }
+    public boolean contains(Comparable x) {
+        return contains(new BinaryNode(x));
+    }
+    public Comparable getLargest() {
+        BinaryNode tmp = root;
+        while (tmp.getRight() != null) tmp = tmp.getRight();
+        return tmp;
+    }
+    public Comparable getSmallest() {
+        BinaryNode tmp = root;
+        while (tmp.getLeft() != null) tmp = tmp.getLeft();
+        return tmp;
+    }
+    public void printLevels() {
+        Queue<BinaryNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            System.out.println(queue);
+            for (int i = 0; i < levelWidth; i++) {
+                BinaryNode current = queue.poll();
+                if (current == null) {
+                    queue.add(null);
+                    queue.add(null);
+                }else {
+                    queue.add(current.getLeft());
+                    queue.add(current.getRight());
+                }
+            }
+        }
+    }
 }
