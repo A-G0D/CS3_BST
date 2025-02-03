@@ -242,4 +242,7 @@ public class BinarySearchTree {
             }
         }
     }
+    public BinaryNode remove(Comparable x) {
+        
+    }
 }
