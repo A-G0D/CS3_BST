@@ -242,7 +242,37 @@ public class BinarySearchTree {
             }
         }
     }
-    public BinaryNode remove(Comparable x) {
-        
-    }
+    public BinaryNode remove(Comparable target) {
+        if(root == null) return null;
+        BinaryNode temp = root;
+        BinaryNode inorderSuccessor;
+        if(root.getValue().equals(target)) {
+            if(root.left() == null && root.right() == null) {
+                root = null;
+                return temp;
+            } else if(root.left() == null) { 
+                root = root.right();
+                temp.setRight(null);
+                return temp;
+            } else if(root.right() == null) {
+root = root.left();
+temp.setLeft(null);
+return temp;
+}
+//remove root degree 2
+{
+inorderSuccessor = successor(root);
+swap(root,inorderSuccessor);
+if(root.right()==inorderSuccessor)
+{
+root.setRight(inorderSuccessor.right());
+inorderSuccessor.setRight(null);
+return inorderSuccessor;
+}
+return remove(root.right(),target);
+}
+}
+//if root is not removed call remove helper method
+return remove(root,target);
+}
 }
