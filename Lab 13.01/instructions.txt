@@ -1,7 +1,0 @@
-a method that prints the first 6 levels
-us
-and|we're
-after|them|--|you
---|all|only|--|--|--|what|--
---|--|--|--|men|ordinary|--|--|--|--|--|--|--|--|--|--
-remove a Comparable from the tree and return the Node

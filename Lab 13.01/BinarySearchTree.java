@@ -242,37 +242,41 @@ public class BinarySearchTree {
             }
         }
     }
-    public BinaryNode remove(Comparable target) {
-        if(root == null) return null;
-        BinaryNode temp = root;
+    private BinaryNode search(BinaryNode parent, Comparable target) {
+        if(parent == null) return null;
+        if(parent.left()!=null && parent.left().getValue().equals(target) || 
+            parent.right()!=null && parent.right().getValue().equals(target))
+            return parent;
+        else if(target.compareTo(parent.getValue()) < 0) return search(parent.left(),target);
+        else return search(parent.right(),target);
+    }
+    public BinaryNode remove(BinaryNode start, Comparable target) {
+        if(start == null) return null;
+        BinaryNode temp = start;
         BinaryNode inorderSuccessor;
-        if(root.getValue().equals(target)) {
-            if(root.left() == null && root.right() == null) {
-                root = null;
+        if(start.getValue().equals(target)) {
+            if(start.left() == null && start.right() == null) {
+                start = null;
                 return temp;
-            } else if(root.left() == null) { 
-                root = root.right();
+            } else if(start.left() == null) { 
+                start = start.right();
                 temp.setRight(null);
                 return temp;
-            } else if(root.right() == null) {
-root = root.left();
-temp.setLeft(null);
-return temp;
-}
-//remove root degree 2
-{
-inorderSuccessor = successor(root);
-swap(root,inorderSuccessor);
-if(root.right()==inorderSuccessor)
-{
-root.setRight(inorderSuccessor.right());
-inorderSuccessor.setRight(null);
-return inorderSuccessor;
-}
-return remove(root.right(),target);
-}
-}
-//if root is not removed call remove helper method
-return remove(root,target);
-}
+            } else if(start.right() == null) {
+                start = start.left();
+                temp.setLeft(null);
+                return temp;
+            } else {
+                inorderSuccessor = successor(start);
+                swap(start,inorderSuccessor);
+                if(start.right()==inorderSuccessor) {
+                    start.setRight(inorderSuccessor.right());
+                    inorderSuccessor.setRight(null);
+                    return inorderSuccessor;
+                }
+                return remove(start.right(),target);
+            }
+        }
+        return remove(root,target);
+    }
 }
