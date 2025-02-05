@@ -12,6 +12,7 @@ public class BinarySearchTreeDriver {
             BST.add(s);
             System.out.println(s);
         }
+        BST.printLevels();
         System.out.println(BST.levelorder());
     }
 }

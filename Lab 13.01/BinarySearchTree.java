@@ -229,10 +229,17 @@ public class BinarySearchTree {
     }
     public void printLevels() {
         Queue<BinaryNode> queue = new LinkedList<>();
+        int depth = 0;
         queue.add(root);
         while (!queue.isEmpty()) {
+            if (depth > 5) break;
+            depth++;
             int levelWidth = queue.size();
-            System.out.println(queue);
+            for (BinaryNode c : queue) {
+                if (c == null) System.out.print("--|");
+                else System.out.print(c.getValue() + "|");
+            }
+            System.out.println();
             for (int i = 0; i < levelWidth; i++) {
                 BinaryNode current = queue.poll();
                 if (current == null) {
