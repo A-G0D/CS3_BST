@@ -2,7 +2,7 @@ import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public class BinarySearchTree {
-    private BinaryNode root;
+    BinaryNode root;
     int size;
     public BinarySearchTree() {
         root = null;
@@ -15,7 +15,7 @@ public class BinarySearchTree {
     }
     public void add(BinaryNode s, BinaryNode x) {
         size++;
-        if (s == null) s = x;
+        if (root == null) root = x;
         else {
             if (s.compareTo(x)>0) {
                 if (s.getLeft() == null) s.setLeft(x);
@@ -119,14 +119,16 @@ public class BinarySearchTree {
         if (x.getLeft()!=null) ret.addAll(revorderA(x.getLeft()));
         return ret;
     }
-    public ArrayList<BinaryNode> levelorder() {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> levelorder() {
+        ArrayList<Comparable> ret = new ArrayList<>();
         Queue<BinaryNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
+            int levelWidth = queue.size();
             for (int i = 0; i < levelWidth; i++) {
                 BinaryNode current = queue.poll();
-                ret.add(current);
+                if (current == null) continue;
+                ret.add(current.getValue());
                 if (current.getLeft() != null) queue.add(current.getLeft());
                 if (current.getRight() != null) queue.add(current.getRight());
             }
@@ -196,7 +198,7 @@ public class BinarySearchTree {
         return true;
     }
     public boolean contains(BinaryNode s, BinaryNode x) {
-        if (s = null) return false;
+        if (s == null) return false;
         else {
             if (s.compareTo(x)>0) {
                 if (s.getLeft() == null) return false;
@@ -218,17 +220,18 @@ public class BinarySearchTree {
     public Comparable getLargest() {
         BinaryNode tmp = root;
         while (tmp.getRight() != null) tmp = tmp.getRight();
-        return tmp;
+        return tmp.getValue();
     }
     public Comparable getSmallest() {
         BinaryNode tmp = root;
         while (tmp.getLeft() != null) tmp = tmp.getLeft();
-        return tmp;
+        return tmp.getValue();
     }
     public void printLevels() {
         Queue<BinaryNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
+            int levelWidth = queue.size();
             System.out.println(queue);
             for (int i = 0; i < levelWidth; i++) {
                 BinaryNode current = queue.poll();
@@ -244,37 +247,37 @@ public class BinarySearchTree {
     }
     private BinaryNode search(BinaryNode parent, Comparable target) {
         if(parent == null) return null;
-        if(parent.left()!=null && parent.left().getValue().equals(target) || 
-            parent.right()!=null && parent.right().getValue().equals(target))
+        if(parent.getLeft()!=null && parent.getLeft().getValue().equals(target) || 
+            parent.getRight()!=null && parent.getRight().getValue().equals(target))
             return parent;
-        else if(target.compareTo(parent.getValue()) < 0) return search(parent.left(),target);
-        else return search(parent.right(),target);
+        else if(target.compareTo(parent.getValue()) < 0) return search(parent.getLeft(),target);
+        else return search(parent.getRight(),target);
     }
     public BinaryNode remove(BinaryNode start, Comparable target) {
         if(start == null) return null;
         BinaryNode temp = start;
         BinaryNode inorderSuccessor;
         if(start.getValue().equals(target)) {
-            if(start.left() == null && start.right() == null) {
+            if(start.getLeft() == null && start.getRight() == null) {
                 start = null;
                 return temp;
-            } else if(start.left() == null) { 
-                start = start.right();
+            } else if(start.getLeft() == null) { 
+                start = start.getRight();
                 temp.setRight(null);
                 return temp;
-            } else if(start.right() == null) {
-                start = start.left();
+            } else if(start.getRight() == null) {
+                start = start.getLeft();
                 temp.setLeft(null);
                 return temp;
             } else {
                 inorderSuccessor = successor(start);
                 swap(start,inorderSuccessor);
-                if(start.right()==inorderSuccessor) {
-                    start.setRight(inorderSuccessor.right());
+                if(start.getRight()==inorderSuccessor) {
+                    start.setRight(inorderSuccessor.getRight());
                     inorderSuccessor.setRight(null);
                     return inorderSuccessor;
                 }
-                return remove(start.right(),target);
+                return remove(start.getRight(),target);
             }
         }
         return remove(root,target);
