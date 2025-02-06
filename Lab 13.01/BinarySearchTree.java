@@ -252,6 +252,7 @@ public class BinarySearchTree {
             }
         }
     }
+    @SuppressWarnings("unchecked")
     private BinaryNode search(BinaryNode parent, Comparable target) {
         if(parent == null) return null;
         if(parent.getLeft()!=null && parent.getLeft().getValue().equals(target) || 

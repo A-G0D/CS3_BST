@@ -1,16 +1,16 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class BinarySearchTreeDriver {
-    public static void main (String[] args) {
-        Scanner sc = new Scanner(System.in);
-        //int n = sc.nextInt();
+    public static void main (String[] args) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("Sample.in"));
+        int n = sc.nextInt();
         BinarySearchTree BST = new BinarySearchTree();
-        Scanner tmp = new Scanner("us and them after all we're only ordinary men me you god knows it's not what");
-        System.out.println(BST.size);
-        while (tmp.hasNext()) {
-            String s = tmp.next();
-            BST.add(s);
-            System.out.println(s);
+        for (int i = 0; i < n; i++) {
+            Scanner tmp = new Scanner(sc.nextLine());
+            while (tmp.hasNext()) {
+                BST.add(tmp.next());
+            }
         }
         BST.printLevels();
         System.out.println(BST.levelorder());
