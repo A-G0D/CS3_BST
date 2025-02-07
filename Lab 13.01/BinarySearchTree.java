@@ -14,14 +14,22 @@ public class BinarySearchTree {
         this(new BinaryNode(x));
     }
     public void add(BinaryNode s, BinaryNode x) {
-        size++;
-        if (root == null) root = x;
+        if (root == null) {
+            root = x;
+            size++;
+        }
         else {
             if (s.compareTo(x)>0) {
-                if (s.getLeft() == null) s.setLeft(x);
+                if (s.getLeft() == null) {
+                    s.setLeft(x);
+                    size++;
+                }
                 else add(s.getLeft(), x);
             } else {
-                if (s.getRight() == null) s.setRight(x);
+                if (s.getRight() == null) {
+                    s.setRight(x);
+                    size++;
+                }
                 else add(s.getRight(), x);
             }
         }
@@ -63,59 +71,59 @@ public class BinarySearchTree {
         while (x.getLeft() != null) x = x.getLeft();
         return x;
     }
-    public ArrayList<BinaryNode> preorder() {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
-        ret.add(root);
+    public ArrayList<Comparable> preorder() {
+        ArrayList<Comparable> ret = new ArrayList<>();
+        ret.add(root.getValue());
         if (root.getLeft()!=null) ret.addAll(preorderA(root.getLeft()));
         if (root.getRight()!=null) ret.addAll(preorderA(root.getRight()));
         return ret;
     }
-    public ArrayList<BinaryNode> preorderA(BinaryNode x) {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
-        ret.add(x);
+    public ArrayList<Comparable> preorderA(BinaryNode x) {
+        ArrayList<Comparable> ret = new ArrayList<>();
+        ret.add(x.getValue());
         if (x.getLeft()!=null) ret.addAll(preorderA(x.getLeft()));
         if (x.getRight()!=null) ret.addAll(preorderA(x.getRight()));
         return ret;
     }
-    public ArrayList<BinaryNode> postorder() {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> postorder() {
+        ArrayList<Comparable> ret = new ArrayList<>();
         if (root.getLeft()!=null) ret.addAll(postorderA(root.getLeft()));
         if (root.getRight()!=null) ret.addAll(postorderA(root.getRight()));
-        ret.add(root);
+        ret.add(root.getValue());
         return ret;
     }
-    public ArrayList<BinaryNode> postorderA(BinaryNode x) {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> postorderA(BinaryNode x) {
+        ArrayList<Comparable> ret = new ArrayList<>();
         if (x.getLeft()!=null) ret.addAll(postorderA(x.getLeft()));
         if (x.getRight()!=null) ret.addAll(postorderA(x.getRight()));
-        ret.add(x);
+        ret.add(x.getValue());
         return ret;
     }
-    public ArrayList<BinaryNode> inorder() {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> inorder() {
+        ArrayList<Comparable> ret = new ArrayList<>();
         if (root.getLeft()!=null) ret.addAll(inorderA(root.getLeft()));
-        ret.add(root);
+        ret.add(root.getValue());
         if (root.getRight()!=null) ret.addAll(inorderA(root.getRight()));
         return ret;
     }
-    public ArrayList<BinaryNode> inorderA(BinaryNode x) {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> inorderA(BinaryNode x) {
+        ArrayList<Comparable> ret = new ArrayList<>();
         if (x.getLeft()!=null) ret.addAll(inorderA(x.getLeft()));
-        ret.add(x);
+        ret.add(x.getValue());
         if (x.getRight()!=null) ret.addAll(inorderA(x.getRight()));
         return ret;
     }
-    public ArrayList<BinaryNode> revorder() {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> revorder() {
+        ArrayList<Comparable> ret = new ArrayList<>();
         if (root.getRight()!=null) ret.addAll(revorderA(root.getRight()));
-        ret.add(root);
+        ret.add(root.getValue());
         if (root.getLeft()!=null) ret.addAll(revorderA(root.getLeft()));
         return ret;
     }
-    public ArrayList<BinaryNode> revorderA(BinaryNode x) {
-        ArrayList<BinaryNode> ret = new ArrayList<>();
+    public ArrayList<Comparable> revorderA(BinaryNode x) {
+        ArrayList<Comparable> ret = new ArrayList<>();
         if (x.getRight()!=null) ret.addAll(revorderA(x.getRight()));
-        ret.add(x);
+        ret.add(x.getValue());
         if (x.getLeft()!=null) ret.addAll(revorderA(x.getLeft()));
         return ret;
     }
@@ -134,6 +142,47 @@ public class BinarySearchTree {
             }
         }
         return ret;
+    }
+    public void printOrders() {
+        printLevels();
+
+        ArrayList tmp = inorder();
+        System.out.print("Tree-->");
+        for (Object o : tmp) {
+            System.out.print(o + " ");
+        }
+        System.out.println();
+
+        tmp = preorder();
+        System.out.println("PRE ORDER");
+        for (Object o : tmp) {
+            System.out.print(o + " ");
+        }
+        System.out.println();
+
+        tmp = postorder();
+        System.out.println("POST ORDER");
+        for (Object o : tmp) {
+            System.out.print(o + " ");
+        }
+        System.out.println();
+
+        tmp = inorder();
+        System.out.println("IN ORDER");
+        for (Object o : tmp) {
+            System.out.print(o + " ");
+        }
+        System.out.println();
+
+        tmp = revorder();
+        System.out.println("REVERSE ORDER");
+        for (Object o : tmp) {
+            System.out.print(o + " ");
+        }
+        System.out.println();
+
+        System.out.println("LEVEL ORDER");
+        System.out.println(levelorder());
     }
     public int leaves() {
         int ret = 0;
@@ -158,7 +207,7 @@ public class BinarySearchTree {
         return ret;
     }
     public int diameter() {
-        return root.getLeft().height() + root.getRight().height() + 1;
+        return height(root.getLeft()) + height(root.getRight()) + 1;
     }
     public int nodes() {
         Queue<BinaryNode> queue = new LinkedList<>();
@@ -180,9 +229,9 @@ public class BinarySearchTree {
         queue.add(root);
         int idx = 0;
         while (!queue.isEmpty()) {
-            idx++;
             int levelWidth = queue.size();
             if (idx == level) return levelWidth;
+            idx++;
             for (int i = 0; i < levelWidth; i++) {
                 BinaryNode current = queue.poll();
                 if (current.getLeft() != null) queue.add(current.getLeft());
@@ -228,6 +277,7 @@ public class BinarySearchTree {
         return tmp.getValue();
     }
     public void printLevels() {
+        System.out.println("Proper Tree Display");
         Queue<BinaryNode> queue = new LinkedList<>();
         int depth = 0;
         queue.add(root);
